@@ -19,11 +19,13 @@
     <h1 class="title">MyReddit</h1>
   </ion-header-bar>
   <ion-content>
-
-    <div ng-repeat="story in stories">
-      <a href="{{ story.url }}" target="_blank"> {{ story.title }} </a> - {{ story.domain }}
-    </div>
-
+<div class="list">
+    <a class="item item-thumbnail-left" ng-repeat="story in stories" href="{{ story.url}}" ng-if="story.thumbnail.startsWith('http')">
+      <img ng-src="{{ story.thumbnail }}" alt="">
+      <h2 class="story-title">{{ story.title }}</h2>
+      <p>{{ story.domain }}</p>
+    </a>
+</div>
   </ion-content>
 </ion-pane>
 </body>

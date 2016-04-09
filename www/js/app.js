@@ -10,7 +10,6 @@
         .success(function (response) {
           console.log(response.data.children);
           angular.forEach(response.data.children, function (child) {
-            console.log(child);
             $scope.stories.push(child.data);
           });
         })
