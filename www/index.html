@@ -9,6 +9,8 @@
   <link href="css/style.css" rel="stylesheet">
 
   <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <script src="lib/moment/moment.js"></script>
+  <script src="lib/angular-moment/angular-moment.js"></script>
   <script src="cordova.js"></script>
   <script src="js/app.js"></script>
 </head>
@@ -20,10 +22,28 @@
   </ion-header-bar>
   <ion-content>
 
-    <div ng-repeat="story in stories">
-      <a href="{{ story.url }}" target="_blank"> {{ story.title }} </a> - {{ story.domain }}
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="loadNewerStories()">
+    </ion-refresher>
+
+    <div class="list">
+        <a class="item item-thumbnail-left" ng-repeat="story in stories track by story.id"
+           ng-click="openLink(story.url)"
+           ng-if="story.thumbnail.startsWith('http')">
+          <img ng-src="{{ story.thumbnail }}" alt="">
+          <h2 class="story-title">{{ story.title }}</h2>
+          <p>
+            <span am-time-ago="story.created_utc" am-preprocess="unix"></span>
+            {{ story.domain }}
+          </p>
+        </a>
     </div>
 
+    <ion-infinite-scroll
+            on-infinite="loadOlderStories()"
+            distance="1%">
+    </ion-infinite-scroll>
   </ion-content>
 </ion-pane>
 </body>
