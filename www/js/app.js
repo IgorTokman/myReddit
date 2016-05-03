@@ -1,11 +1,13 @@
 (function () {
 
+  //Starts the main app module
   var app = angular.module('myreddit', ['ionic', 'angularMoment'])
 
   app.controller("RedditCtrl", function ($http, $scope) {
 
     $scope.stories = [];
 
+    //Fetches the data from Reddit API
     function loadStories(params, callback) {
       $http.get("https://www.reddit.com/r/Android/new/.json", {params: params})
           .success(function (response) {
@@ -17,6 +19,7 @@
           });
     }
 
+    //Performs the pulling old records 
     $scope.loadOlderStories = function () {
       var params = {};
       if($scope.stories.length > 0)
@@ -27,7 +30,8 @@
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-
+    
+    //Realizes the getting new records
     $scope.loadNewerStories = function () {
       var params = {'before': $scope.stories[0].name};
 
@@ -36,12 +40,14 @@
         $scope.$broadcast('scroll.refreshComplete');
       });
     }
-
+    
+    //Opens the record in new window
     $scope.openLink = function (url) {
       window.open(url, "_blank");
     }
   });
-
+  
+  //Implements the cordova setting  
   app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
       if(window.cordova && window.cordova.plugins.Keyboard) {
